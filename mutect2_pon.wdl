@@ -58,7 +58,9 @@ workflow Mutect2_Panel {
             "machine_mem": small_task_mem * 1000, "command_mem": small_task_mem * 1000 - 500,
             "disk": small_task_disk, "boot_disk_size": boot_disk_size}
 
-    scatter (normal_bam in zip(normal_bams, normal_bais)) {
+    Array[Pair[String, String]] normal_bams_and_bais = zip(normal_bams, normal_bais)
+    
+    scatter (normal_bam in normal_bams_and_bais) {
         call m2.Mutect2 {
             input:
                 intervals = intervals,
